@@ -1,4 +1,4 @@
-package example.pi
+package example.pi.typed
 
 import akka.actor.typed.scaladsl.{Behaviors, Routers}
 import akka.actor.typed.{ActorRef, ActorSystem, Behavior, SupervisorStrategy}

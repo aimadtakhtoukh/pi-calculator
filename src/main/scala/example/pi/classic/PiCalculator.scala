@@ -1,22 +1,18 @@
-package example.pi
+package example.pi.classic
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.routing.RoundRobinPool
 
 import scala.concurrent.duration.Duration
 
-object ClassicPiCalculator extends App {
+object PiCalculator extends App {
 
   calculate(nrOfWorkers = 4, nrOfElements = 10000, nrOfMessages = 10000)
 
   sealed trait PiMessage
-
   case object Calculate extends PiMessage
-
   case class Work(start: Int, nrOfElements: Int) extends PiMessage
-
   case class Result(value: Double) extends PiMessage
-
   case class PiApproximation(pi: Double, duration: Duration)
 
   class Worker extends Actor {
@@ -43,7 +39,7 @@ object ClassicPiCalculator extends App {
     var nrOfResults: Double = _
     val start: Long = System.currentTimeMillis
 
-    val workerRouter = context.actorOf(Props[Worker].withRouter(RoundRobinPool(nrOfWorkers)), name = "workerRouter")
+    val workerRouter: ActorRef = context.actorOf(Props[Worker].withRouter(RoundRobinPool(nrOfWorkers)), name = "workerRouter")
 
     override def receive: Receive = {
       case Calculate =>
